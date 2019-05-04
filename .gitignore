@@ -1,0 +1,6 @@
+*.zip
+*.bin
+*.o
+*.elf
+*.part
+build/*
