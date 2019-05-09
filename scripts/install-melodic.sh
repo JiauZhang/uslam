@@ -4,7 +4,7 @@ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main
 sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
 sudo apt update
 # 3. install
-sudo apt install ros-melodic-desktop
+sudo apt install -y ros-melodic-desktop
 # to find availavel packages, use:
 # apt search ros-melodic
 # 4. initialize rosdep
@@ -14,4 +14,4 @@ rosdep update
 echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
 source ~/.bashrc
 # dependencies for building packages
-sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
+sudo apt install -y python-rosinstall python-rosinstall-generator python-wstool build-essential

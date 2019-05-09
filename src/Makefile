@@ -1,0 +1,2 @@
+__all:
+	@echo $(VPATH)
