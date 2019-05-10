@@ -16,5 +16,9 @@ fetch_image.o: fetch_image.cpp
 # $(CPP) $(CPPFLAGS) fetch_image.cpp -o fetch_image.o 
 	$(CPP)  fetch_image.cpp -o fetch_image.o $(CPPFLAGS)
 
+
+image_raw.o: image_raw.cpp
+	$(CPP) image_raw.cpp -o image_raw.o $(CPPFLAGS)
+
 clean:
 	rm -rf *.o

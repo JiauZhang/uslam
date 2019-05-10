@@ -4,3 +4,7 @@
 *.elf
 *.part
 build/*
+ros/build/*
+ros/devel/*
+.catkin_workspace
+ros/src/CMakeLists.txt
