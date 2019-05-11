@@ -31,10 +31,6 @@ VPATH := $(srctree)
 
 export srctree objtree VPATH
 
-all:
-	echo $(srctree)
-	echo $(objtree)
-
 HOSTCC       = gcc
 HOSTCXX      = g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer
@@ -56,7 +52,7 @@ MAKEFLAGS += --include-dir=$(srctree)
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
 CC		= $(CROSS_COMPILE)gcc
-CPP		= $(CC) -E
+CPP		= $(CROSS_COMPILE)g++
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
 STRIP		= $(CROSS_COMPILE)strip
@@ -66,7 +62,8 @@ AWK		= awk
 
 # include/ directory
 USLAMINCLUDE    := -Iinclude \
-                   -I$(srctree)/include
+                   -I$(srctree)/include \
+				   -I$(srctree)/include/ros
 
 export VERSION PATCHLEVEL SUBLEVEL
 export SSLAMINCLUDE
@@ -76,7 +73,14 @@ export HOSTCXX HOSTCXXFLAGS
 
 src-y := src/
 
-# include $(srctree)/src/Makefile
+all:
+	echo $(srctree)
+	echo $(objtree)
+	
+uslam:
+	$(Q)$(MAKE) -C $(srctree)/src uslam
+
+#include $(srctree)/src/Makefile
 
 PHONY += FORCE
 FORCE:

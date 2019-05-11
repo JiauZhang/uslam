@@ -9,6 +9,9 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp> 
 
+#include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
+
 class ImageData {
 public:
 	cv::Mat image;
