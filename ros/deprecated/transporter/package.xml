@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>lib_transporter</name>
+  <name>transporter</name>
   <version>0.0.0</version>
   
-  <description>The lib_transporter package</description>
+  <description>The transporter package</description>
   
   <maintainer email="nobady@todo.todo">linux</maintainer>
   <license>TODO</license>

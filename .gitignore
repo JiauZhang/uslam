@@ -8,3 +8,4 @@ ros/build/*
 ros/devel/*
 .catkin_workspace
 ros/src/CMakeLists.txt
+pangolin/build/*

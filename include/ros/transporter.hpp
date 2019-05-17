@@ -11,7 +11,7 @@
 class Transporter{
 public:
 	explicit Transporter(ImageData *IData);
-	~Transporter();
+	//~Transporter();
 	void transport(const sensor_msgs::ImageConstPtr& msg);
 	void run(int argc, char **argv);
 private:

@@ -78,7 +78,7 @@ all:
 	echo $(objtree)
 	
 uslam:
-	$(Q)$(MAKE) -C $(srctree)/src uslam
+	$(Q)$(MAKE) -C $(srctree)/src uslam.o
 
 #include $(srctree)/src/Makefile
 
