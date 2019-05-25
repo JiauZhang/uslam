@@ -1,6 +1,6 @@
 #include "transporter.hpp"
 
-#define DEBUG_TRANSPORTER
+#undef DEBUG_TRANSPORTER
 
 #ifdef DEBUG_TRANSPORTER
 #include <opencv2/core/core.hpp>
@@ -33,7 +33,9 @@ void Transporter::transport(const sensor_msgs::ImageConstPtr& msg)
     cv_ptr->image.copyTo(IData->image);
 	
 	#ifdef DEBUG_TRANSPORTER
+	std::cout << "DEBUG_TRANSPORTER" << std::endl;
 	cv::imshow("transporter", cv_ptr->image);
+	cv::waitKey(500);
 	#endif
 	
     IData->image_data_mutex.unlock();

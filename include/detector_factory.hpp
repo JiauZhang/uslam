@@ -1,5 +1,5 @@
-# ifndef __MATCHER_FACTORY__H__
-# define __MATCHER_FACTORY__H__
+# ifndef __DETECTOR_FACTORY__H__
+# define __DETECTOR_FACTORY__H__
 
 #include <map>
 #include <string>

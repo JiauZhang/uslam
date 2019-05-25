@@ -19,7 +19,7 @@ catkin_package(
  INCLUDE_DIRS
  LIBRARIES image_raw
  CATKIN_DEPENDS cv_bridge image_transport roscpp sensor_msgs std_msgs
- DEPENDS system_lib
+# DEPENDS system_lib
 )
 
 include_directories(

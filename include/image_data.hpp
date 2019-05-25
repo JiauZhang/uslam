@@ -5,16 +5,17 @@
 #include <cstring>
 #include <string>
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp> 
+//#include <opencv2/core/core.hpp>
+//#include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv2/highgui/highgui.hpp> 
 
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
+template <typename Dtype>
 class ImageData {
 public:
-	cv::Mat image;
+	Dtype image;
 	boost::mutex image_data_mutex;
 	static ImageData& getInstance() {
 		static ImageData singleton;
