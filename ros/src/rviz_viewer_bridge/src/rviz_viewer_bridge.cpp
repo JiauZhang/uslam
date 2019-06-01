@@ -1,44 +1,16 @@
-#ifndef __RVIZ_VIEWER__
-#define __RVIZ_VIEWER__
+#include "rviz_viewer_bridge.hpp"
 
-#include <ros/ros.h>
-#include <visualization_msgs/Marker.h>
-#include <opencv2/core/core.hpp>
+//using uslam::RvizViewerBridge;
 
-#include "viewer.hpp"
+namespace uslam {
 
-class RvizViewer: public Viewer {
-public:
-	//explicit RvizViewer(float camera_size=0.04, float point_size=0.01, float frame_size=0.04);
-	//explicit RvizViewer(int argc, char **argv, \
-	//					float camera_size, float point_size, float frame_size);
-	explicit RvizViewer(int argc, char **argv);
-						
-	void plot_camera(vector<vector<float> > &points);
-	
-	void plot_frames();
-	void add_frames(vector<vector<float> > &points);
-	void clear_frames();
-	
-    void plot_points();
-	void add_points(vector<float> &points);
-	void clear_points();
-	
-private:	
-	//float camera_size;
-	//float point_size;
-	//float frame_size;
-
-	ros::NodeHandle nh;
-    ros::Publisher publisher;
-
-    visualization_msgs::Marker VCamera;
-    visualization_msgs::Marker VPoints;
-    visualization_msgs::Marker VFrames;
-};
-
-RvizViewer::RvizViewer(int argc, char **argv)
+RvizViewerBridge::RvizViewerBridge(const ViewerParameter &param)
 {
+	int argc = param.argc;
+	char **argv = param.argv;
+	ros::init(argc, argv, "rviz_viewer");
+	static ros::NodeHandle nh;
+	
 	const char *frame_id = "/uslam/world";
     const char *camera_namespace = "Camera";
 	const char *points_namespace = "Points";
@@ -78,8 +50,6 @@ RvizViewer::RvizViewer(int argc, char **argv)
     VPoints.color.a = 1.0;
 	
 	//Configure Publisher
-	//ros::init(argc, argv, "rviz_viewer");
-	//ros::init(1, "uslam_viewer", "uslam_viewer");
     publisher = nh.advertise<visualization_msgs::Marker>("uslam/map", 10);
 
     publisher.publish(VCamera);
@@ -87,7 +57,7 @@ RvizViewer::RvizViewer(int argc, char **argv)
     publisher.publish(VPoints);
 }
 
-void RvizViewer::plot_camera(vector<vector<float> > &points)
+void RvizViewerBridge::plot_camera(vector<vector<float> > &points)
 {	
 	VCamera.points.clear();
 
@@ -130,13 +100,13 @@ void RvizViewer::plot_camera(vector<vector<float> > &points)
 	publisher.publish(VCamera);
 }
 
-void RvizViewer::plot_frames()
+void RvizViewerBridge::plot_frames()
 {
 	VFrames.header.stamp = ros::Time::now();
 	publisher.publish(VFrames);
 }
 
-void RvizViewer::add_frames(vector<vector<float> > &points)
+void RvizViewerBridge::add_frames(vector<vector<float> > &points)
 {
 	geometry_msgs::Point msgs_o,msgs_p1, msgs_p2, msgs_p3, msgs_p4;
 	msgs_o.x = points[0][0];
@@ -173,18 +143,18 @@ void RvizViewer::add_frames(vector<vector<float> > &points)
 	VFrames.points.push_back(msgs_p1);
 }
 
-void RvizViewer::clear_frames()
+void RvizViewerBridge::clear_frames()
 {
 	VFrames.points.clear();
 }
 
-void RvizViewer::plot_points()
+void RvizViewerBridge::plot_points()
 {
 	VPoints.header.stamp = ros::Time::now();
 	publisher.publish(VPoints);
 }
 
-void RvizViewer::add_points(vector<float> &points)
+void RvizViewerBridge::add_points(vector<float> &points)
 {
 	geometry_msgs::Point p;
 	p.x = points[0];
@@ -193,10 +163,9 @@ void RvizViewer::add_points(vector<float> &points)
 	VPoints.points.push_back(p);
 }
 
-void RvizViewer::clear_points()
+void RvizViewerBridge::clear_points()
 {
 	VPoints.points.clear();
 }
 
-
-#endif
+} // namespace uslam

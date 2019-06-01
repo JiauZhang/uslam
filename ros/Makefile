@@ -11,6 +11,10 @@ CPPFLAGS += $(INCS) $(LIBS)
 CPP = g++
 CC = gcc
 
+ros_lib:
+	$(Q)echo "\nplease call in USLAM ROOT DIR and specify target"
+	$(Q)echo "for example: make ros_lib_rviz_viewer\n"
+
 fetch_image.o: fetch_image.cpp
 # bad usage !!!
 # $(CPP) $(CPPFLAGS) fetch_image.cpp -o fetch_image.o 
@@ -19,6 +23,9 @@ fetch_image.o: fetch_image.cpp
 
 image_raw.o: image_raw.cpp
 	$(CPP) image_raw.cpp -o image_raw.o $(CPPFLAGS)
+
+rviz_viewer_bridge: src/rviz_viewer_bridge/src/rviz_viewer_bridge.cpp
+	cd $(srctree)/ros && catkin_make rviz_viewer_bridge
 
 clean:
 	rm -rf *.o

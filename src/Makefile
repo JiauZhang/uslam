@@ -24,3 +24,6 @@ USLAMFLAGS += $(USLAMINCLUDE)
 
 uslam.o: uslam.cpp
 	$(Q)$(CPP) uslam.cpp -o uslam.o $(USLAMFLAGS)
+	
+viewer_factory: viewer_factory.cpp
+	$(Q)$(CPP) $^ -shared -o libviewer_factory.so -I$(srctree)/include -std=c++11 -Wall

@@ -79,6 +79,21 @@ all:
 	
 uslam:
 	$(Q)$(MAKE) -C $(srctree)/src uslam.o
+	
+ros_tutorial%:
+	$(Q)$(MAKE) -C $(srctree)/ros/tutorial $(patsubst ros_tutorial_%,%, $@).o
+
+ros_tutorial:
+	$(Q)$(MAKE) -C $(srctree)/ros/tutorial $@
+	
+ros_lib%:
+	$(Q)$(MAKE) -C $(srctree)/ros $(patsubst ros_lib_%,%, $@)
+	
+ros_lib:
+	$(Q)$(MAKE) -C $(srctree)/ros $@
+	
+viewer_factory:
+	$(Q)$(MAKE) -C $(srctree)/src $@
 
 #include $(srctree)/src/Makefile
 

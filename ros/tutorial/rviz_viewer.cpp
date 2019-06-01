@@ -1,7 +1,10 @@
-#include <vector>
-
 #include <boost/thread.hpp>
-#include "rviz_viewer.hpp"
+
+#include "common.hpp"
+#include "viewer.hpp"
+#include "viewer_factory.hpp"
+
+using namespace uslam;
 
 void delay(int seconds)
 {
@@ -10,15 +13,26 @@ void delay(int seconds)
 }
 
 int main(int argc, char **argv)
-{
-	ros::init(argc, argv, "rviz_viewer");
+{	
+	//Viewer *viewer = new RvizViewer(argc, argv);
 	
-	Viewer *viewer = new RvizViewer(argc, argv);
+	ViewerParameter param;
+	param.argc = argc;
+	param.argv = argv;
+	param.type = "Rviz";
+	
+	//std::cout << "type list: \n" << ViewerRegistry::ViewerTypeListString() << std::endl;
+	
+	static shared_ptr<Viewer> viewer = ViewerRegistry::CreateViewer(param);
+	
+	if (viewer == NULL)
+		return -1;
 	
 	float d = 0.04;
 	bool add = true;
+	unsigned int iters = 0;
 	
-	while (1) {
+	while (iters++ <= 15) {
 		vector<vector<float> > points;
 		vector<float> temp;
 		temp.push_back(0.0);
@@ -57,7 +71,9 @@ int main(int argc, char **argv)
 			d -= 0.005;
 			if (d < 0.04)
 				add = true;
-		}		
+		}
+
+		std::cout << "iters: " << iters << std::endl;
 		
 		delay(1);
 	}

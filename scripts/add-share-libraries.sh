@@ -1,3 +1,3 @@
-echo "configing the terminal environment..."
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./ros/devel/lib:
-echo -e "Done !"
+echo -e "\nconfiging the terminal environment..."
+export LD_LIBRARY_PATH=./ros/devel/lib:$LD_LIBRARY_PATH:
+echo -e "Done !\n"

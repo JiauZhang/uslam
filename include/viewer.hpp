@@ -5,9 +5,11 @@
 #include <cstring>
 #include <vector>
 
-//#include "pose.hpp"
+#include "viewer_factory.hpp"
+#include "common.hpp"
+#include "parameters.hpp"
 
-using namespace std;
+namespace uslam {
 
 class Viewer {
 public:
@@ -49,6 +51,14 @@ public:
     virtual void plot_points() = 0;
 	virtual void add_points(vector<float> &points) = 0;
 	virtual void clear_points() = 0;
+	
+	virtual void plot_lines() = 0;
+	virtual void add_lines(vector<vector<float> > &points) = 0;
+	virtual void clear_lines() = 0;
+	
+	//ViewerParameter param;
 }; 
+
+} // namespace uslam
 
 #endif

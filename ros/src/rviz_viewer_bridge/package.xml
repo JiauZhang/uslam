@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>rviz_viewer</name>
+  <name>rviz_viewer_bridge</name>
   <version>0.0.0</version>
-  <description>The rviz_viewer package</description>
+  <description>The rviz_viewer_bridge package</description>
 
   <maintainer email="linux@todo.todo">linux</maintainer>
   <license>TODO</license>
