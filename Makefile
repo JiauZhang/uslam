@@ -94,6 +94,9 @@ ros_lib:
 	
 viewer_factory:
 	$(Q)$(MAKE) -C $(srctree)/src $@
+	
+test%:
+	$(Q)$(MAKE) -C $(srctree)/src/test $(patsubst test_%,%, $@).o
 
 #include $(srctree)/src/Makefile
 

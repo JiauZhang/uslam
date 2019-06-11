@@ -12,6 +12,8 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 
+namespace uslam {
+
 template <typename Dtype>
 class ImageData {
 public:
@@ -25,5 +27,7 @@ public:
 private:
 	ImageData () {}
 };
+
+} // namespace uslam
 
 #endif

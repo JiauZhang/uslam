@@ -2,8 +2,9 @@
 #define __INIT_H__
 
 #include "viewer.hpp"
-#include "viewer_factoty.hpp"
+#include "viewer_factory.hpp"
 #include "parameters.hpp"
+#include <pangolin/pangolin.h>
 
 namespace uslam {
 
@@ -25,6 +26,9 @@ public:
 	void plot_lines() {};
 	void add_lines(vector<vector<float> > &points) {};
 	void clear_lines() {};
+
+private:
+	const ViewerParameter *param;
 };
 
 } // namespace uslam

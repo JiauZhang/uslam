@@ -9,13 +9,11 @@
 
 namespace uslam {
 
-template <typename Dtype>
 class Detector;
 
-template <typename Dtype>
 class DetectorRegistry {
  public:
-  typedef shared_ptr<Detector<Dtype> > (*Creator)(const DetectorParameter&);
+  typedef shared_ptr<Detector> (*Creator)(const DetectorParameter&);
   typedef std::map<string, Creator> CreatorRegistry;
 
   static CreatorRegistry& Registry() {
@@ -34,12 +32,13 @@ class DetectorRegistry {
   }
 
   // Get a detector using a DetectorParameter.
-  static shared_ptr<Detector<Dtype> > CreateDetector(const DetectorParameter& param) {
-    const string& type = param.type();
+  static shared_ptr<Detector> CreateDetector(const DetectorParameter& param) {
+    const string& type = param.type;
     CreatorRegistry& registry = Registry();
     if (registry.count(type) != 1) {
 		std::cout << "Unknown Detector type: " << type \
 				  << " (known types: " << DetectorTypeListString() << ")";
+		return NULL;
 	} else {
 		return registry[type](param);
 	}
@@ -74,28 +73,23 @@ class DetectorRegistry {
   }
 }; // DetectorRegistry
 
-
-template <typename Dtype>
 class DetectorRegisterer {
  public:
   DetectorRegisterer(const string& type, \
-					 shared_ptr<Detector<Dtype> > (*creator)(const DetectorParameter&)) {
-    DetectorRegistry<Dtype>::AddCreator(type, creator);
+					 shared_ptr<Detector> (*creator)(const DetectorParameter&)) {
+    DetectorRegistry::AddCreator(type, creator);
   }
 };
 
+#define REGISTER_DETECTOR_CREATOR(type, creator)             \
+  static DetectorRegisterer g_creator_##type(#type, creator) \
 
-#define REGISTER_MATCHER_CREATOR(type, creator)                                  \
-  static DetectorRegisterer<float> g_creator_f_##type(#type, creator<float>);     \
-  static DetectorRegisterer<double> g_creator_d_##type(#type, creator<double>)    \
-
-#define REGISTER_MATCHER_CLASS(type)                                             \
-  template <typename Dtype>                                                    \
-  shared_ptr<Detector<Dtype> > Creator_##type##Detector(const DetectorParameter& param) \
+#define REGISTER_DETECTOR_CLASS(type)                                             \
+  shared_ptr<Detector> Creator_##type##Detector(const DetectorParameter& param) \
   {                                                                            \
-    return shared_ptr<Detector<Dtype> >(new type##Detector<Dtype>(param));           \
+    return shared_ptr<Detector>(new type##Detector(param));           \
   }                                                                            \
-REGISTER_MATCHER_CREATOR(type, Creator_##type##Detector)
+  REGISTER_DETECTOR_CREATOR(type, Creator_##type##Detector)
 	
 } // namespace uslam
 
