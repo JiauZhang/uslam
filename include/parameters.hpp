@@ -66,7 +66,7 @@ public:
 	DetectorParameter(): param(NULL) {}	
 	std::string name;
 	std::string type;
-	// ORBDetectorParameter * and so on.
+	// FASTDetectorParameter * and so on.
 	void *param;
 	std:: string file_name;
 	
@@ -74,16 +74,16 @@ public:
 	
 }; // class DetectorParameter
 
-class ORBDetectorParameter {
+class FASTDetectorParameter {
 public:
-	ORBDetectorParameter(): grid_size(16), grid_x(0), grid_y(0) {}
+	FASTDetectorParameter(): grid_size(16), grid_x(0), grid_y(0) {}
 	// default grid_size = 16
 	unsigned int grid_size;
 	unsigned int grid_x;
 	unsigned int grid_y;
 	
 	CameraParameter *camera;
-}; // class ORBDetectorParameter
+}; // class FASTDetectorParameter
 	
 } // namespace uslam
 

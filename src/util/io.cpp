@@ -1,4 +1,5 @@
 #include "io.hpp"
+#include "check.hpp"
 
 namespace uslam {
 
@@ -44,6 +45,10 @@ bool read_object_(std::string &s, std::string &object_)
 		index_++;
 	}
 	
+	CHECK_EQ((s[index_] != ']'), 0, "invalid syntax:\n[" + s + "]\n");
+	
+	object_ += s[index_];
+	/*
 	try {
 		if (s[index_] != ']')
 			throw s;
@@ -53,7 +58,7 @@ bool read_object_(std::string &s, std::string &object_)
 		std::cout << "error syntax: " << s << std::endl;
 		exit(1);
 	}
-	
+	*/
 	return true;
 }
 
@@ -77,6 +82,13 @@ bool read_parameter_(std::string &s, std::string &object_, std::map<std::string,
 		index_++;
 	}
 	
+	CHECK_EQ((s[index_] != '='), 0, "invalid syntax:\n[" + s + "]\n");
+	
+	index_++;
+	while (index_ < s.size() && s[index_] == ' ') {
+		index_++;
+	}
+	/*
 	try {
 		if (s[index_] != '=') {
 			//std::cout << s[index_] << std::endl;
@@ -91,7 +103,7 @@ bool read_parameter_(std::string &s, std::string &object_, std::map<std::string,
 		std::cout << "error syntax:\n" << str << std::endl;
 		exit(1);
 	}
-	
+	*/
 	while (index_ < s.size() && s[index_] != ' ' && s[index_] != 13) {
 		value_ += s[index_];
 		index_++;
@@ -106,8 +118,9 @@ bool read_parameter_(std::string &s, std::string &object_, std::map<std::string,
 void read_parameter_from_file(const std::string &file_name, std::map<std::string, std::map<std::string, std::string>> &parameters)
 {
 	std::ifstream in(file_name);
-	std::string s;
+	CHECK_NE(in.is_open(), 0, "parameter file open failed !");
 	
+	std::string s;
 	bool has_object, has_param;
 	std::string object_;
 	
@@ -132,6 +145,8 @@ void read_parameter_from_file(const std::string &file_name, std::map<std::string
 			read_object_(s, object_);
 		}
 	}
+	
+	in.close();
 }	
 	
 }

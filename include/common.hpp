@@ -6,6 +6,13 @@
 #include <map>
 #include <memory> // std::shared_ptr
 
+#include "check.hpp"
+
+#define INSTANTIATE_CLASS(classname) \
+  template class classname<float>; \
+  template class classname<double>; \
+  template class classname<int>
+
 namespace uslam {
 	
 using std::vector;

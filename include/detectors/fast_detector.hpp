@@ -8,13 +8,14 @@
 
 namespace uslam {
 	
-class ORBDetector: public Detector {	
+class FASTDetector: public Detector {	
 public:
-	explicit ORBDetector(const DetectorParameter &param);
+	explicit FASTDetector(const DetectorParameter &param);
 	void detect(cv::Mat &image_, vector<cv::KeyPoint> &kps_);
+	//void detect(vector<Blob<float> *> input,  vector<Blob<float> *> output);
 	
 private:
-	ORBDetectorParameter orb_param;
+	FASTDetectorParameter orb_param;
 	
 }; // ORBDetector
 

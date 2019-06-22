@@ -4,15 +4,18 @@
 #include <opencv2/opencv.hpp>
 #include "common.hpp"
 #include "parameters.hpp"
+#include "blob.hpp"
 
 namespace uslam {
 
+//template <typename Dtype>
 class Detector {
 public:	
 	explicit Detector(const DetectorParameter &param);
 	//virtual ~Detector() {}
 	
-	virtual void detect(cv::Mat &image_, std::vector<cv::KeyPoint> &kps) = 0;
+	virtual void detect(cv::Mat &image, std::vector<cv::KeyPoint> &kps) = 0;
+	//virtual void detect(vector<Blob<float> *> input,  vector<Blob<float> *> output) = 0;
 	virtual void load_parameter(std::string &file_name) {}
 	virtual void detector_setup(const DetectorParameter &param);
 	// you should never override this method !
