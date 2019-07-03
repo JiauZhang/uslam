@@ -1,5 +1,5 @@
-# ifndef __MATCHER_FACTORY__H__
-# define __MATCHER_FACTORY__H__
+# ifndef __DESCRIPTOR_FACTORY__H__
+# define __DESCRIPTOR_FACTORY__H__
 
 #include <map>
 #include <string>
@@ -9,13 +9,9 @@
 
 namespace uslam {
 
-template <typename Dtype>
-class Descriptor;
-
-template <typename Dtype>
 class DescriptorRegistry {
  public:
-  typedef shared_ptr<Descriptor<Dtype> > (*Creator)(const DescriptorParameter&);
+  typedef shared_ptr<Descriptor> (*Creator)(const DescriptorParameter&);
   typedef std::map<string, Creator> CreatorRegistry;
 
   static CreatorRegistry& Registry() {
@@ -34,12 +30,13 @@ class DescriptorRegistry {
   }
 
   // Get a descriptor using a DescriptorParameter.
-  static shared_ptr<Descriptor<Dtype> > CreateDescriptor(const DescriptorParameter& param) {
-    const string& type = param.type();
+  static shared_ptr<Descriptor> CreateDescriptor(const DescriptorParameter& param) {
+    const string& type = param.type;
     CreatorRegistry& registry = Registry();
     if (registry.count(type) != 1) {
 		std::cout << "Unknown Descriptor type: " << type
 				  << " (known types: " << DescriptorTypeListString() << ")";
+		return NULL;
 	} else {
 		return registry[type](param);
 	}
@@ -75,27 +72,24 @@ class DescriptorRegistry {
 };
 
 
-template <typename Dtype>
 class DescriptorRegisterer {
  public:
   DescriptorRegisterer(const string& type,
-                  shared_ptr<Descriptor<Dtype> > (*creator)(const DescriptorParameter&)) {
-    DescriptorRegistry<Dtype>::AddCreator(type, creator);
+                  shared_ptr<Descriptor> (*creator)(const DescriptorParameter&)) {
+    DescriptorRegistry::AddCreator(type, creator);
   }
 };
 
 
-#define REGISTER_MATCHER_CREATOR(type, creator)                                  \
-  static DescriptorRegisterer<float> g_creator_f_##type(#type, creator<float>);     \
-  static DescriptorRegisterer<double> g_creator_d_##type(#type, creator<double>)    \
+#define REGISTER_DESCRIPTOR_CREATOR(type, creator)                                  \
+  static DescriptorRegisterer g_creator_##type(#type, creator)
 
-#define REGISTER_MATCHER_CLASS(type)                                             \
-  template <typename Dtype>                                                    \
-  shared_ptr<Descriptor<Dtype> > Creator_##type##Descriptor(const DescriptorParameter& param) \
+#define REGISTER_DESCRIPTOR_CLASS(type)                                             \
+  shared_ptr<Descriptor> Creator_##type##Descriptor(const DescriptorParameter& param) \
   {                                                                            \
-    return shared_ptr<Descriptor<Dtype> >(new type##Descriptor<Dtype>(param));           \
+    return shared_ptr<Descriptor>(new type##Descriptor(param));           \
   }                                                                            \
-REGISTER_MATCHER_CREATOR(type, Creator_##type##Descriptor)
+  REGISTER_DESCRIPTOR_CREATOR(type, Creator_##type##Descriptor)
 
 	
 } // namespace uslam

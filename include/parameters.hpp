@@ -74,6 +74,15 @@ public:
 	
 }; // class DetectorParameter
 
+class DescriptorParameter {
+public:
+	std::string name;
+	std::string type;
+	// manager descriptor parameters
+	std::map<std::string, std::string> params_;
+	
+}; // class DescriptorParameter
+
 class FASTDetectorParameter {
 public:
 	FASTDetectorParameter(): grid_size(16), grid_x(0), grid_y(0) {}
