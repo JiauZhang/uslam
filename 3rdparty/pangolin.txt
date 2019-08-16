@@ -1,0 +1,2 @@
+ubuntu 14.04
+CMakeLists.txt 添加 add_compile_options(-std=c++11)
