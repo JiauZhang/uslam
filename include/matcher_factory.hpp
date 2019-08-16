@@ -9,13 +9,9 @@
 
 namespace uslam {
 
-template <typename Dtype>
-class Matcher;
-
-template <typename Dtype>
 class MatcherRegistry {
  public:
-  typedef shared_ptr<Matcher<Dtype> > (*Creator)(const MatcherParameter&);
+  typedef shared_ptr<Matcher> (*Creator)(const MatcherParameter&);
   typedef std::map<string, Creator> CreatorRegistry;
 
   static CreatorRegistry& Registry() {
@@ -34,12 +30,13 @@ class MatcherRegistry {
   }
 
   // Get a matcher using a MatcherParameter.
-  static shared_ptr<Matcher<Dtype> > CreateMatcher(const MatcherParameter& param) {
-    const string& type = param.type();
+  static shared_ptr<Matcher> CreateMatcher(const MatcherParameter& param) {
+    const string& type = param.type;
     CreatorRegistry& registry = Registry();
     if (registry.count(type) != 1) {
 		std::cout << "Unknown Matcher type: " << type
 				  << " (known types: " << MatcherTypeListString() << ")";
+		return NULL;
 	} else {
 		return registry[type](param);
 	}
@@ -74,28 +71,24 @@ class MatcherRegistry {
   }
 };
 
-
-template <typename Dtype>
 class MatcherRegisterer {
  public:
   MatcherRegisterer(const string& type,
-                  shared_ptr<Matcher<Dtype> > (*creator)(const MatcherParameter&)) {
-    MatcherRegistry<Dtype>::AddCreator(type, creator);
+                  shared_ptr<Matcher> (*creator)(const MatcherParameter&)) {
+    MatcherRegistry::AddCreator(type, creator);
   }
 };
 
 
 #define REGISTER_MATCHER_CREATOR(type, creator)                                  \
-  static MatcherRegisterer<float> g_creator_f_##type(#type, creator<float>);     \
-  static MatcherRegisterer<double> g_creator_d_##type(#type, creator<double>)    \
+  static MatcherRegisterer g_creator_##type(#type, creator)
 
 #define REGISTER_MATCHER_CLASS(type)                                             \
-  template <typename Dtype>                                                    \
-  shared_ptr<Matcher<Dtype> > Creator_##type##Matcher(const MatcherParameter& param) \
+  shared_ptr<Matcher> Creator_##type##Matcher(const MatcherParameter& param) \
   {                                                                            \
-    return shared_ptr<Matcher<Dtype> >(new type##Matcher<Dtype>(param));           \
+    return shared_ptr<Matcher>(new type##Matcher(param));           \
   }                                                                            \
-REGISTER_MATCHER_CREATOR(type, Creator_##type##Matcher)
+  REGISTER_MATCHER_CREATOR(type, Creator_##type##Matcher)
 
 	
 } // namespace uslam

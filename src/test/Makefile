@@ -2,9 +2,12 @@ test__all:
 	$(Q)echo "\nplease call in USLAM ROOT DIR and specify target"
 	$(Q)echo "for example: make test_io\n"
 
-TEST_IO_INCLUDE = -I$(srctree)/include/util -std=c++11 -Wall
+TEST_IO_INCLUDE = -I$(srctree)/include/util -std=c++11 -Wall \
+					-I$(srctree)/include
+TEST_IO_SRC = test_io.cpp $(srctree)/src/util/io.cpp \
+			$(srctree)/src/util/check.cpp
 	
-io.o: test_io.cpp $(srctree)/src/util/io.cpp
+io.o: $(TEST_IO_SRC)
 	$(Q)$(CPP) $^ -o io.o $(TEST_IO_INCLUDE)
 
 # include files	
@@ -53,4 +56,18 @@ BRIEF_DESCRIPTOR_SRC = \
 	
 brief_descriptor.o: $(BRIEF_DESCRIPTOR_SRC)
 	$(CPP) $^ -o brief_descriptor.o $(BRIEF_DESCRIPTOR_INCLUDE)
+
+SYSTEM_INCLUDE = $(COMMON_INCLUDE) \
+				$(OPENCV_INCLUDE) \
+				$(OPENCV_LIBRARY)
+$(wildcard src/test/*.cpp) 				
+SYSTEM_SRC = test_system.cpp $(wildcard $(srctree)/src/util/*.cpp) \
+			$(wildcard $(srctree)/src/descriptors/*.cpp) \
+			$(srctree)/src/descriptor.cpp $(wildcard $(srctree)/src/detectors/*.cpp) \
+			$(srctree)/src/detector.cpp $(srctree)/src/matcher.cpp \
+			$(wildcard $(srctree)/src/matchers/*.cpp) \
+			$(wildcard $(srctree)/include/*_factory.hpp)
+
+system.o: $(SYSTEM_SRC)
+	$(CPP) $^ -o system.o $(SYSTEM_INCLUDE)
 	

@@ -15,6 +15,7 @@ public:
 	//virtual ~Detector() {}
 	
 	virtual void detect(cv::Mat &image, std::vector<cv::KeyPoint> &kps) = 0;
+	virtual void detect(vector<cv::Mat *> &bottom, vector<cv::Mat *> &top) = 0;
 	//virtual void detect(vector<Blob<float> *> input,  vector<Blob<float> *> output) = 0;
 	virtual void load_parameter(std::string &file_name) {}
 	virtual void detector_setup(const DetectorParameter &param);

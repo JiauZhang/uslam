@@ -8,10 +8,11 @@
 
 namespace uslam {
 	
-class FASTDetector: public Detector {	
+class FastDetector: public Detector {	
 public:
-	explicit FASTDetector(const DetectorParameter &param);
+	explicit FastDetector(const DetectorParameter &param);
 	void detect(cv::Mat &image_, vector<cv::KeyPoint> &kps_);
+	void detect(vector<cv::Mat *> &bottom, vector<cv::Mat *> &top);
 	//void detect(vector<Blob<float> *> input,  vector<Blob<float> *> output);
 	
 private:

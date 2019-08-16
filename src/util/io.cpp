@@ -1,6 +1,8 @@
 #include "io.hpp"
 #include "check.hpp"
 
+#undef IO_DEBUG
+
 namespace uslam {
 
 bool char_is_legal(char &c)
@@ -35,7 +37,9 @@ bool delete_leading_spaces_(std::string &s)
 
 bool read_object_(std::string &s, std::string &object_)
 {
+	#ifdef IO_DEBUG
 	std::cout << "object: " << s << std::endl;
+	#endif
 	
 	object_ += s[0];
 	unsigned int index_ = 1;
@@ -67,7 +71,9 @@ bool read_parameter_(std::string &s, std::string &object_, std::map<std::string,
 	if (s[0] == '[')
 		return true;
 
+	#ifdef IO_DEBUG
 	std::cout << "parameter: " << s << std::endl;
+	#endif
 	
 	std::string key_;
 	std::string value_;
@@ -110,7 +116,18 @@ bool read_parameter_(std::string &s, std::string &object_, std::map<std::string,
 	}
 	
 	std::map<std::string, std::string> &key_value = parameters[object_];
-	key_value[key_] = value_;
+	
+	// for 'input' and 'output' keyword
+	if (key_ == "input" || key_ == "output") {
+		if (key_value.size() == 0) {
+			key_value[key_] = value_;
+		} else {
+			value_ = ' ' + value_;
+			key_value[key_] += value_;
+		}
+	} else { // for other keyword	
+		key_value[key_] = value_;
+	}
 	
 	return false;
 }
