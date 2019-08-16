@@ -12,7 +12,9 @@ class PangolinViewerBridge: public Viewer
 {
 public:
 	explicit PangolinViewerBridge(const ViewerParameter &param);
-						
+	
+	void run();
+	
 	void plot_camera(vector<vector<float> > &points);
 	
 	void plot_frames();

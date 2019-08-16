@@ -1,8 +1,14 @@
 #include "pangolin_viewer_bridge.hpp"
+#include <mutex>
 
 namespace uslam {
 
 PangolinViewerBridge::PangolinViewerBridge(const ViewerParameter &param)
+{
+	this->param = &param;
+}
+
+void PangolinViewerBridge::run()
 {
 	pangolin::CreateWindowAndBind("Pangolin Viewer", param.window_width, param.window_height);
 	
@@ -39,7 +45,11 @@ PangolinViewerBridge::PangolinViewerBridge(const ViewerParameter &param)
 	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	this->param = &param;
+	while (!pangolin::ShouldQuit()) {
+		
+		
+		pangolin::FinishFrame();
+	}
 }
 
 void PangolinViewerBridge::plot_camera(vector<vector<float> > &points)

@@ -70,4 +70,8 @@ SYSTEM_SRC = test_system.cpp $(wildcard $(srctree)/src/util/*.cpp) \
 
 system.o: $(SYSTEM_SRC)
 	$(CPP) $^ -o system.o $(SYSTEM_INCLUDE)
-	
+
+PANGOLIN_INC_LIB = -I/usr/include/eigen3 -lGL -lGLEW -lpthread
+
+pangolin.o: test_pangolin.cpp
+	$(CPP) $^ -o pangolin.o -lpangolin $(PANGOLIN_INC_LIB)
